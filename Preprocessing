@@ -1,6 +1,6 @@
 install.packages("BiocManager")
 BiocManager::install("SingleCellExperiment")
 library(scRNAseq)
-sce.mess <- MessmerESCData()
-sce.mess$`experiment batch` <- factor(sce.mess$`experiment batch`)
+sce.bhad <- BhaduriOrganoidData()
+sce.bhad$`experiment batch` <- factor(sce.bhad$`experiment batch`)
 
