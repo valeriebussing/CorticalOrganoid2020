@@ -1,0 +1,34 @@
+install.packages("BiocManager")
+BiocManager::install("SingleCellExperiment")
+library(scRNAseq)
+
+## Load cortical organoid dataset and convert batch to a factor
+sce.bhad <- BhaduriOrganoidData()
+sce.bhad$`experiment batch` <- factor(sce.bhad$`experiment batch`)
+
+## Load reference annotation data
+library(AnnotationHub)
+ens.hs.v97 <- AnnotationHub()[["AH73881"]]
+anno <- select(ens.hs.v97, keys=rownames(sce.mess), 
+    keytype="GENEID", columns=c("SYMBOL"))
+rowData(sce.mess) <- anno[match(rownames(sce.mess), anno$GENEID),]
+
+## QC
+colSums(as.matrix(filtered))
+
+## Visualise QC metrics distribution across batches (x-axis) and phenotypes for cortical cells. Each point is a cell and is colored by whether it was discarded.
+gridExtra::grid.arrange(
+    plotColData(original, x="experiment batch", y="sum",
+        colour_by=I(filtered$discard), other_field="phenotype") +
+        facet_wrap(~phenotype) + scale_y_log10(),
+    plotColData(original, x="experiment batch", y="detected",
+        colour_by=I(filtered$discard), other_field="phenotype") +
+        facet_wrap(~phenotype) + scale_y_log10(),
+    plotColData(original, x="experiment batch", y="subsets_Mito_percent",
+        colour_by=I(filtered$discard), other_field="phenotype") +
+        facet_wrap(~phenotype),
+    plotColData(original, x="experiment batch", y="altexps_ERCC_percent",
+        colour_by=I(filtered$discard), other_field="phenotype") +
+        facet_wrap(~phenotype),
+    ncol=1
+)
