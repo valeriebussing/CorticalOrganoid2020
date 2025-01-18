@@ -15,7 +15,6 @@ rowData(sce.mess) <- anno[match(rownames(sce.mess), anno$GENEID),]
 
 ## QC
 colSums(as.matrix(filtered))
-
 ## Visualise QC metrics distribution across batches (x-axis) and phenotypes for cortical cells. Each point is a cell and is colored by whether it was discarded.
 gridExtra::grid.arrange(
     plotColData(original, x="experiment batch", y="sum",
