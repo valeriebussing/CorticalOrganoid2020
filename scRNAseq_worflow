@@ -31,3 +31,9 @@ gridExtra::grid.arrange(
         facet_wrap(~phenotype),
     ncol=1
 )
+
+
+gridExtra::grid.arrange(
+    plotColData(original, x="experiment batch", y="sum",
+        colour_by=I(filtered$discard), other_field="phenotype") +
+        facet_wrap(~phenotype) + scale_y_log10()
